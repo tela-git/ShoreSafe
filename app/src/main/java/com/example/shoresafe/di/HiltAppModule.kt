@@ -1,14 +1,12 @@
 package com.example.shoresafe.di
 
-import com.example.shoresafe.data.PlaceSearchRepository
-import com.example.shoresafe.data.PlacesSearchRepoImpl
-import com.example.shoresafe.network.PlaceSearchApi
-import com.example.weathersamachar.data.model.PlacesSearchResponse
+import com.example.shoresafe.data.BeachWeatherRepository
+import com.example.shoresafe.data.BeachWeatherRepositoryImpl
+import com.example.shoresafe.network.BeachWeatherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import org.intellij.lang.annotations.PrintFormat
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -28,15 +26,13 @@ object HiltAppModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit): PlaceSearchApi {
-        return retrofit.create(PlaceSearchApi::class.java)
+    fun provideBeachWeatherApiService(retrofit: Retrofit): BeachWeatherApi {
+        return retrofit.create(BeachWeatherApi::class.java)
     }
 
     @Provides
     @Singleton
-    fun providePlacesSearchRepository(placesSearchApiService: PlaceSearchApi): PlaceSearchRepository {
-        return PlacesSearchRepoImpl(
-            placesSearchApiService
-        )
+    fun provideBeachWeatherRepository(placesSearchApiService: BeachWeatherApi): BeachWeatherRepository {
+        return BeachWeatherRepositoryImpl()
     }
 }

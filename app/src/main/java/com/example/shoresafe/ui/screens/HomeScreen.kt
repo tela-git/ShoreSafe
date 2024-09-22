@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,33 +31,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
-import com.example.shoresafe.PlaceSearchUiState
-import com.example.shoresafe.PlacesSearchViewModel
-import com.example.weathersamachar.data.model.PlacesSearchResponse
-import com.example.weathersamachar.data.model.Result
-import java.lang.Error
+import com.example.shoresafe.BeachSearchViewModel
+import com.example.shoresafe.data.model.Beach
+import com.example.shoresafe.data.model.BeachSearchResponse
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
-    val placeSearchViewModel: PlacesSearchViewModel = hiltViewModel()
-    val placeSearchUiState = placeSearchViewModel.uiState.collectAsState()
+    val beachSearchViewModel: BeachSearchViewModel = hiltViewModel()
+    val beachSearchUiState = beachSearchViewModel.uiState.collectAsState()
 
     var query by remember { mutableStateOf("") }
+
     HomePage(
         query = query,
         onQueryChange = { query = it },
-        response = placeSearchUiState.value.response,
-        isError = placeSearchUiState.value.isError,
-        onSearchButtonClicked = { placeSearchViewModel.searchPlace(query) },
+        response = beachSearchUiState.value.response,
+        isError = beachSearchUiState.value.isError,
+        onSearchButtonClicked = { beachSearchViewModel.searchBeach(query) },
         modifier = modifier,
-        errorMessage = placeSearchUiState.value.error
+        errorMessage = beachSearchUiState.value.error
     )
 }
 
@@ -67,7 +63,7 @@ fun HomePage(
     modifier: Modifier = Modifier,
     query: String,
     onQueryChange: (String) -> Unit,
-    response: PlacesSearchResponse?,
+    response: BeachSearchResponse?,
     onSearchButtonClicked: () -> Unit,
     isError: Boolean,
     errorMessage: String?
@@ -92,7 +88,7 @@ fun HomePage(
                     .fillMaxWidth(0.9f)
                     .padding(8.dp),
                 shape = RoundedCornerShape(16.dp),
-                placeholder = { Text("Search any place or beach...") }
+                placeholder = { Text("Search any city or beach...") }
             )
             IconButton(
                 onClick = {
@@ -122,7 +118,7 @@ fun HomePage(
 @Composable
 fun ResultField(
     modifier: Modifier = Modifier,
-    response: PlacesSearchResponse?
+    response: BeachSearchResponse?
 ) {
     LazyColumn(
         modifier = Modifier
@@ -131,8 +127,8 @@ fun ResultField(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(
-            items = response?.results ?: emptyList()
-        ) { item: Result?->
+            items = response?.beaches ?: emptyList()
+        ) { item: Beach? ->
             ResponseItem(item)
         }
     }
@@ -140,7 +136,7 @@ fun ResultField(
 
 @Composable
 fun ResponseItem(
-    item: Result?
+    item: Beach?
 ) {
     ElevatedCard(
         onClick = { },
@@ -155,23 +151,19 @@ fun ResponseItem(
         ) {
             DetailsFieldCard(
                 field = "Name: ",
-                value = item?.formatted ?: "Unavailable"
+                value = item?.name ?: "Unavailable"
             )
             DetailsFieldCard(
-                field = "Country: ",
-                value = item?.components?.country ?: "Unavailable"
-            )
-            DetailsFieldCard(
-                field = "State: ",
-                value = item?.components?.state ?: "Unavailable"
+                field = "City: ",
+                value = item?.city ?: "Unavailable"
             )
             DetailsFieldCard(
                 field = "Latitude: ",
-                value = item?.annotations?.DMS?.lat ?: "Unavailable"
+                value = item?.latitude ?: "Unavailable"
             )
             DetailsFieldCard(
                 field = "Longitude: ",
-                value = item?.annotations?.DMS?.lng ?: "Unavailable"
+                value = item?.longitude?: "Unavailable"
             )
 
         }

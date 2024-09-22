@@ -3,8 +3,7 @@ package com.example.shoresafe
 import android.accounts.NetworkErrorException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shoresafe.data.PlaceSearchRepository
-import com.example.weathersamachar.data.model.PlacesSearchResponse
+import com.example.shoresafe.data.model.BeachSearchResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,20 +11,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val sd = "8669cac44e7143f4bb1c64abe0e480e9"
+private const val sd = ""
 @HiltViewModel
-class PlacesSearchViewModel @Inject constructor(
-    private val placeSearchRepository: PlaceSearchRepository
+class BeachSearchViewModel @Inject constructor(
 ): ViewModel() {
-    private val _uiState = MutableStateFlow(PlaceSearchUiState())
+    private val _uiState = MutableStateFlow(BeachSearchUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun searchPlace(name: String) {
+    fun searchBeach(query: String) {
         viewModelScope.launch {
             try {
                 _uiState.update { state->
                     state.copy(
-                        response = placeSearchRepository.findPlace(name = name, apiKey = sd),
+                        response = null,
                         isError = false
                     )
                 }
@@ -52,10 +50,7 @@ class PlacesSearchViewModel @Inject constructor(
             try {
                 _uiState.update { state ->
                     state.copy(
-                        response = placeSearchRepository.findPlace(
-                            name = "Hyderabad",
-                            apiKey = sd
-                        ),
+                        response = null,
                         isError = false
                     )
                 }
@@ -71,8 +66,8 @@ class PlacesSearchViewModel @Inject constructor(
     }
 }
 
-data class PlaceSearchUiState(
-    val response: PlacesSearchResponse? = null,
+data class BeachSearchUiState(
+    val response: BeachSearchResponse? = null,
     val isError: Boolean = false,
     val error: String? = "Something went wrong!"
 )
