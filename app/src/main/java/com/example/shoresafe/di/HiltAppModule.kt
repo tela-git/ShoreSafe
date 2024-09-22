@@ -1,5 +1,7 @@
 package com.example.shoresafe.di
 
+import com.example.shoresafe.data.PlaceSearchRepository
+import com.example.shoresafe.data.PlacesSearchRepoImpl
 import com.example.shoresafe.network.PlaceSearchApi
 import com.example.weathersamachar.data.model.PlacesSearchResponse
 import dagger.Module
@@ -28,5 +30,13 @@ object HiltAppModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): PlaceSearchApi {
         return retrofit.create(PlaceSearchApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlacesSearchRepository(placesSearchApiService: PlaceSearchApi): PlaceSearchRepository {
+        return PlacesSearchRepoImpl(
+            placesSearchApiService
+        )
     }
 }

@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
             ShoreSafeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     val navController = rememberNavController()
-
                     ShoreSafeApp(
                         modifier = Modifier
                             .padding(innerPadding),

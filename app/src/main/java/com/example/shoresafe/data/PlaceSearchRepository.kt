@@ -1,5 +1,6 @@
 package com.example.shoresafe.data
 
+
 import com.example.shoresafe.network.PlaceSearchApi
 import com.example.weathersamachar.data.model.PlacesSearchResponse
 
