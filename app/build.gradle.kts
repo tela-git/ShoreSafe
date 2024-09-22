@@ -74,6 +74,10 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
 
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
