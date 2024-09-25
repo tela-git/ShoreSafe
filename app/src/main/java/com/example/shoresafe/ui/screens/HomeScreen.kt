@@ -4,10 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -72,8 +70,6 @@ fun HomePage(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(24.dp))
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -108,7 +104,9 @@ fun HomePage(
         }
 
         if(!isError) {
-            AnimatedVisibility(true){ ResultField(response = response) }
+            AnimatedVisibility(true){
+                ResultField(response = response)
+            }
         } else {
            ErrorScreen(errorMessage)
         }
@@ -126,6 +124,13 @@ fun ResultField(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if(response?.beaches?.isEmpty() != false) {
+            item {
+                Text(
+                    text = "Search for beach..."
+                )
+            }
+        }
         items(
             items = response?.beaches ?: emptyList()
         ) { item: Beach? ->
@@ -204,14 +209,14 @@ fun ErrorScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(16.dp)
-    ){
+    ) {
         Text(
             text = "OOPS...!",
             style = MaterialTheme.typography.displayMedium
         )
         Text(
-            text = "Unknown Error Occurred!",
-            style = MaterialTheme.typography.labelMedium
+            text = "Something went wrong",
+            style = MaterialTheme.typography.labelLarge
         )
 
     }
