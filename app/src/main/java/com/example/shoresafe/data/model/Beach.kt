@@ -10,5 +10,6 @@ data class Beach(
     val latitude: String,
     val longitude: String,
     val name: String,
-    val uri: String?
+    val uri: String?,
+    val state: String
 )

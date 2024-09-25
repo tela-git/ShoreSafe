@@ -90,14 +90,12 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:postgrest-kt")
     implementation("io.github.jan-tennert.supabase:gotrue-kt")
 
-
-
     // Ktor
     implementation(libs.ktor.client.android)
     implementation("io.ktor:ktor-client-android:2.3.12")
 
-
-
+    // Koil
+    implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

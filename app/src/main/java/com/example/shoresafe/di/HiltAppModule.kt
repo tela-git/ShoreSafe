@@ -32,7 +32,7 @@ object HiltAppModule {
 
     @Provides
     @Singleton
-    fun provideSupabaseClient(): SupabaseClient{
+    fun provideSupabaseClient(): SupabaseClient {
         val supabase = createSupabaseClient(
             supabaseUrl = "https://goulnxubcfwwgxynpqlb.supabase.co",
             supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvdWxueHViY2Z3d2d4eW5wcWxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcwNjc0NDUsImV4cCI6MjA0MjY0MzQ0NX0.VbB6OigODlyePBRAeXl3pHWMnUlEQUppIgP2ohYWMZo"

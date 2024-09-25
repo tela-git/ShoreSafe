@@ -4,23 +4,14 @@ import android.accounts.NetworkErrorException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoresafe.data.BeachSearchRepository
-import com.example.shoresafe.data.BeachWeatherRepository
-import com.example.shoresafe.data.model.Beach
 import com.example.shoresafe.data.model.BeachSearchResponse
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.jan.supabase.createSupabaseClient
-import io.github.jan.supabase.postgrest.Postgrest
-import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-private const val sd = ""
 @HiltViewModel
 class BeachSearchViewModel @Inject constructor(
     private val beachSearchRepository: BeachSearchRepository
@@ -31,7 +22,7 @@ class BeachSearchViewModel @Inject constructor(
     fun searchBeach(query: String) {
         viewModelScope.launch {
             try {
-                val beachList = beachSearchRepository.listAllBeaches()
+                val beachList = beachSearchRepository.queryBeaches(query)
                 _uiState.update { state->
                     state.copy(
                         response = BeachSearchResponse(beachList),
@@ -46,6 +37,7 @@ class BeachSearchViewModel @Inject constructor(
                     )
                 }
             } catch (e: Exception) {
+                print(e)
                 _uiState.update {
                     it.copy(
                         isError = true,
