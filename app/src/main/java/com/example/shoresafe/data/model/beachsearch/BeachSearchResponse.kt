@@ -1,4 +1,4 @@
-package com.example.shoresafe.data.model
+package com.example.shoresafe.data.model.beachsearch
 
 data class BeachSearchResponse(
     val beaches: List<Beach>

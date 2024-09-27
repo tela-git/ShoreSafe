@@ -1,6 +1,6 @@
 package com.example.shoresafe.data
 
-import com.example.shoresafe.data.model.Beach
+import com.example.shoresafe.data.model.beachsearch.Beach
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 

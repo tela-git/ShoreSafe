@@ -18,6 +18,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+const val BASE_URL = "https://marine-api.open-meteo.com/"
 @Module
 @InstallIn(SingletonComponent::class)
 object HiltAppModule {
@@ -25,7 +26,7 @@ object HiltAppModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("BASE_URL")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -51,8 +52,10 @@ object HiltAppModule {
 
     @Provides
     @Singleton
-    fun provideBeachWeatherRepository(placesSearchApiService: BeachWeatherApi): BeachWeatherRepository {
-        return BeachWeatherRepositoryImpl()
+    fun provideBeachWeatherRepository(beachWeatherApiService: BeachWeatherApi): BeachWeatherRepository {
+        return BeachWeatherRepositoryImpl(
+            beachWeatherApi = beachWeatherApiService
+        )
     }
 
     @Provides

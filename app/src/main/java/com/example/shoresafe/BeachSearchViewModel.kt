@@ -4,7 +4,7 @@ import android.accounts.NetworkErrorException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.shoresafe.data.BeachSearchRepository
-import com.example.shoresafe.data.model.BeachSearchResponse
+import com.example.shoresafe.data.model.beachsearch.BeachSearchResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

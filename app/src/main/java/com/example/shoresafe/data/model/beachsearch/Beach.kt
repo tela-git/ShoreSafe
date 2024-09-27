@@ -1,4 +1,4 @@
-package com.example.shoresafe.data.model
+package com.example.shoresafe.data.model.beachsearch
 
 import kotlinx.serialization.Serializable
 
