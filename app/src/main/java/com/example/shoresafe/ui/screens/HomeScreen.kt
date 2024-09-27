@@ -9,8 +9,10 @@ import androidx.compose.animation.slideIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +20,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -25,6 +28,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -38,10 +42,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Matrix
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
@@ -53,6 +61,7 @@ import com.example.shoresafe.BeachWeatherViewModel
 import com.example.shoresafe.R
 import com.example.shoresafe.data.model.beachsearch.Beach
 import com.example.shoresafe.data.model.beachsearch.BeachSearchResponse
+import com.example.shoresafe.data.model.beachweather.Daily
 import com.example.shoresafe.data.model.beachweather.MarineWeather
 import com.example.shoresafe.data.util.Suitability
 import com.example.shoresafe.data.util.checkBeachSafety
@@ -229,7 +238,14 @@ fun ExpandedCard(
 ) {
     val beachWeatherReport = beachWeatherUiState.response
     val suitability = if(beachWeatherReport != null) checkBeachSafety(beachWeatherReport) else Suitability.NotSafe
-
+    var dialogVisibility by remember { mutableStateOf(false) }
+    AnimatedVisibility(dialogVisibility) {
+        ExtraInfoDialog(
+            beachWeatherUiState = beachWeatherUiState,
+            beach = item!!,
+            onDismiss = { dialogVisibility = false}
+        )
+    }
     ElevatedCard(
         onClick = {
             onCardClick()
@@ -268,9 +284,10 @@ fun ExpandedCard(
                     .crossfade(true)
                     .build(),
                 contentDescription = item?.name,
-                error = painterResource(R.drawable.ic_launcher_foreground),
+                error = painterResource(R.drawable.beach_photo),
                 modifier = Modifier
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp)),
+                contentScale = ContentScale.Crop
             )
             when {
                 beachWeatherUiState.isLoading -> {
@@ -334,6 +351,23 @@ fun ExpandedCard(
                         }
 
                     }
+                }
+            }
+            
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TextButton(
+                    onClick = {
+                        dialogVisibility = true
+                    },
+                    enabled = !beachWeatherUiState.isLoading && !beachWeatherUiState.isError
+                ) {
+                    Text(
+                        text = "More info"
+                    )
                 }
             }
 
@@ -427,3 +461,141 @@ fun ErrorScreen(
     }
 }
 
+@Composable
+fun ExtraInfoDialog(
+    beachWeatherUiState: BeachWeatherUiState,
+    beach: Beach,
+    onDismiss: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = { onDismiss() },
+    ) {
+        Card () {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(
+                    text = beach.name,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+                LazyColumn (
+                ) {
+                    item {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(beach.uri)
+                                .crossfade(true)
+                                .build(),
+                            contentDescription = beach.name,
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp)),
+                            contentScale = ContentScale.Crop,
+                            error = painterResource(R.drawable.beach_photo)
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            DetailsField("City: ", beach.city)
+                            DetailsField("State/UT: ", beach.state)
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Text(
+                                    text = "Co-ordinates",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
+                                DetailsField("Latitude: ", beach.latitude)
+                                DetailsField("Longitude: ", beach.longitude)
+                            }
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(4.dp)
+                            ) {
+                                Text(
+                                    text = "Weather today",
+                                    fontWeight = FontWeight.ExtraBold,
+                                    fontSize = 20.sp
+                                )
+                                DetailsField(
+                                        "Avg wave height: ",
+                                beachWeatherUiState.response?.current?.wave_height.toString(),
+                                "m"
+                                )
+                                DetailsField(
+                                    "Avg swell wave height: ",
+                                    beachWeatherUiState.response?.current?.swell_wave_height.toString(),
+                                    "m"
+                                )
+                                DetailsField(
+                                    "Avg wind wave height: ",
+                                    beachWeatherUiState.response?.current?.wind_wave_height.toString(),
+                                    "m"
+                                )
+                            }
+                            WeeklyWeatherDetails(
+                                weekWeather = beachWeatherUiState.response!!.daily
+                            )
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun WeeklyWeatherDetails(
+    weekWeather: Daily
+) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = Modifier.padding(4.dp)
+    ) {
+        Text(
+            text = "Weekly Forecast",
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 20.sp
+        )
+    }
+    weekWeather.time.forEachIndexed { index, time ->
+        Column(
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(
+                text = time,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+            DetailsField("Max wave height: ", weekWeather.wave_height_max[index].toString(), "m")
+            DetailsField("Max wind wave height: ", weekWeather.wind_wave_height_max[index].toString(), "m")
+            DetailsField("Max swell wave height: ", weekWeather.swell_wave_height_max[index].toString(), "m")
+        }
+    }
+}
+
+@Composable
+fun DetailsField(
+    heading: String,
+    value: String,
+    units: String = ""
+) {
+    Row(
+        modifier = Modifier
+            .padding(horizontal = 4.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = heading
+        )
+        Text(
+            text = value + units,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}

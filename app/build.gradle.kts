@@ -94,7 +94,7 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation("io.ktor:ktor-client-android:2.3.12")
 
-    // Koil
+    // Coil
     implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
