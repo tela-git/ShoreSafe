@@ -56,6 +56,7 @@ import com.example.shoresafe.data.model.beachsearch.BeachSearchResponse
 import com.example.shoresafe.data.model.beachweather.MarineWeather
 import com.example.shoresafe.data.util.Suitability
 import com.example.shoresafe.data.util.checkBeachSafety
+import io.ktor.util.hex
 
 @Composable
 fun HomeScreen(
@@ -292,7 +293,7 @@ fun ExpandedCard(
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight(600)
                                 ),
-                                color = Color(0, 153, 0)
+                                color = Color(0xFF4CAF50)
                             )
                         }
                         Suitability.NotSafe -> {
@@ -301,7 +302,7 @@ fun ExpandedCard(
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight(600)
                                 ),
-                                color = Color.Red
+                                color = Color(0xFFD32F2F)
                             )
                         }
                         Suitability.NotForChildren -> {
@@ -310,7 +311,7 @@ fun ExpandedCard(
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight(600)
                                 ),
-                                color = Color(255, 204, 0)
+                                color = Color(0xFFFFC107)
                             )
                         }
                         Suitability.NotForBeginners -> {
@@ -319,7 +320,7 @@ fun ExpandedCard(
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight(600)
                                 ),
-                                color = Color(255, 204, 0)
+                                color = Color(0xFFFF9800)
                             )
                         }
                         Suitability.NotSafeForBeginnersAndChildren -> {
@@ -328,7 +329,7 @@ fun ExpandedCard(
                                 style = MaterialTheme.typography.headlineSmall.copy(
                                     fontWeight = FontWeight(600)
                                 ),
-                                color = Color.Blue
+                                color = Color(0xFFB65A27)
                             )
                         }
 
