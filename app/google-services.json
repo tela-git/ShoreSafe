@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308016070871",
+    "project_id": "shore-safe-project",
+    "storage_bucket": "shore-safe-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308016070871:android:3941241e8b44b6624a7092",
+        "android_client_info": {
+          "package_name": "com.example.shoresafe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6HelYFpjKsjnqhmvR67nVgavan5xNDmY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
