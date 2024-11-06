@@ -6,6 +6,7 @@ import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideIn
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Matrix
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -53,6 +57,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.SubcomposeAsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.shoresafe.BeachSearchUiState
 import com.example.shoresafe.BeachSearchViewModel
@@ -251,7 +258,8 @@ fun ExpandedCard(
             onCardClick()
         },
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .sizeIn(minHeight = 150.dp),
         elevation = CardDefaults.elevatedCardElevation(30.dp)
 
     ) {
@@ -284,10 +292,10 @@ fun ExpandedCard(
                     .crossfade(true)
                     .build(),
                 contentDescription = item?.name,
-                error = painterResource(R.drawable.beach_photo),
+                error =  painterResource(R.drawable.beach_photo),
                 modifier = Modifier
                     .clip(RoundedCornerShape(12.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
             when {
                 beachWeatherUiState.isLoading -> {
@@ -353,7 +361,7 @@ fun ExpandedCard(
                     }
                 }
             }
-            
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -386,6 +394,7 @@ fun NonExpandedCard(
         },
         modifier = Modifier
             .fillMaxWidth()
+
 
     ) {
         Column(

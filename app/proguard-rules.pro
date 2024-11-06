@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+-keep class com.example.shoresafe.data.model.beachsearch.Beach { *; }
+-keep class dagger.hilt.** { *; }
+-keep class * extends dagger.hilt.android.internal.lifecycle.HiltWrapper_** { *; }
+-keep @dagger.hilt.android.lifecycle.HiltViewModel class * { *; }
+-keep class io.github.jan.supabase.** { *; }

@@ -33,7 +33,7 @@ class BeachSearchViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isError = true,
-                        error = e.message
+                        error = e.localizedMessage
                     )
                 }
             } catch (e: Exception) {
@@ -41,7 +41,7 @@ class BeachSearchViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isError = true,
-                        error = e.message
+                        error = e.localizedMessage
                     )
                 }
             }

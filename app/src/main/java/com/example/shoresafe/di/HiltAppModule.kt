@@ -1,5 +1,6 @@
 package com.example.shoresafe.di
 
+import com.example.shoresafe.BuildConfig
 import com.example.shoresafe.data.BeachSearchRepository
 import com.example.shoresafe.data.BeachSearchRepositoryImpl
 import com.example.shoresafe.data.BeachWeatherRepository
@@ -19,6 +20,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 const val BASE_URL = "https://marine-api.open-meteo.com/"
+val supabaseKey = BuildConfig.SUPABASE_KEY
+val supabseUrl = BuildConfig.SUPABASE_URL
 @Module
 @InstallIn(SingletonComponent::class)
 object HiltAppModule {
@@ -35,8 +38,8 @@ object HiltAppModule {
     @Singleton
     fun provideSupabaseClient(): SupabaseClient {
         val supabase = createSupabaseClient(
-            supabaseUrl = "https://goulnxubcfwwgxynpqlb.supabase.co",
-            supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvdWxueHViY2Z3d2d4eW5wcWxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcwNjc0NDUsImV4cCI6MjA0MjY0MzQ0NX0.VbB6OigODlyePBRAeXl3pHWMnUlEQUppIgP2ohYWMZo"
+            supabaseUrl = supabseUrl,
+            supabaseKey = supabaseKey
         ) {
             defaultSerializer = KotlinXSerializer(json = Json)
             install(Postgrest)
@@ -60,7 +63,7 @@ object HiltAppModule {
 
     @Provides
     @Singleton
-    fun proviceBeachSearchRepository(supabase: SupabaseClient) :BeachSearchRepository{
+    fun provideBeachSearchRepository(supabase: SupabaseClient) :BeachSearchRepository{
         return BeachSearchRepositoryImpl(supabase)
     }
 }
